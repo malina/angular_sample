@@ -1,0 +1,91 @@
+
+<form class="form-inline">
+  <div class="form-group">
+    <label>Price from</label>
+    <input type="date"
+           class="form-control"
+           ng-model='vm.issueDateRange.min'
+           ng-model-options="{ debounce: 200 }">
+  </div>
+  <div class="form-group">
+    <label>to</label>
+    <input type="date"
+           class="form-control"
+           ng-model='vm.issueDateRange.max'
+           ng-model-options="{ debounce: 200 }">
+  </div>
+  <div class="clearfix"></div>
+  <br><br>
+  <div class="form-group">
+    <label>Price from</label>
+    <input type="text"
+           class="form-control"
+           ng-model='vm.priceRange.min'
+           ng-model-options="{ debounce: 200 }"
+           ng-change="vm.filterRange('price', vm.priceRange)">
+  </div>
+  <div class="form-group">
+    <label>to</label>
+    <input type="text"
+           class="form-control"
+           ng-model='vm.priceRange.max'
+           ng-model-options="{ debounce: 200 }"
+           ng-change="vm.filterRange('price', vm.priceRange)">
+  </div>
+  <div class="clearfix"></div>
+  <br><br>
+  <div class="form-group">
+    <label>Color</label>
+    <select class="form-control" ng-model="vm.query.color" ng-options="color as color for color in vm.colors" ng-change='vm.filter()'>
+      <option value=""></option>
+    </select>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"
+             id="query_instock"
+             ng-model="vm.query.instock"
+             ng-change = "vm.filter()"> In stock only
+    </label>
+  </div>
+  <br>
+  <br>
+  <button class="btn btn-default" ng-click="vm.resetFilter()">Reset</button>
+</form>
+
+<div class="row">
+  <div class="pull-right">
+    <p>
+      Cart:
+      <ng-pluralize count="vm.cart.data.length"
+              when="{'0': 'empty',
+                     '1': '{} item',
+                     '2': '{} items',
+                     'other': '{} items'}">
+      </ng-pluralize>
+    </p>
+  </div>
+</div>
+
+<div class="row" ng-repeat='item in vm.filteredItems'>
+  <div class="thumbnail col-md-3">
+     <img ng-src="{{item.image}}"
+          alt="{{item.name}}">
+  </div>
+  <div class="caption col-md-9 row">
+    <div class="col-md-4">
+       <p>{{item.name}}</p>
+       <p class="badge" style='background: {{item.color}}'>{{item.color}}</p>
+    </div>
+    <div class="col-md-4">
+       <p>{{item.issue_date | date}}</p>
+       <p>
+         <input type="checkbox" ng-model='item.instock' disabled>
+       </p>
+    </div>
+    <div class="col-md-4">
+       <p>{{item.price | currency}}</p>
+       <div class="btn btn-success" ng-click='vm.addToCart(item)'>Order</div>
+    </div>
+  </div>
+</div>
